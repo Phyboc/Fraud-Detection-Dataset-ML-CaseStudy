@@ -65,7 +65,7 @@ ML-Case-Study/
 3. **Strict Zero-Leakage Pipeline**:
    - **Train/Test Splitting**: Performed before fitting any dataset-dependent parameters (80/20 train/test split, `random_state=42`).
    - **Stratified Split for Classification**: `stratify=y_cls` preserves the ~26.57% fraud class ratio across both `y_train` and `y_test`.
-   - **Feature Transformation Selection**: Skewness thresholds (`skewness > 1.0`) to select `log1p`-eligible features are evaluated **strictly on `X_train`** for classification and regression tasks.
+   - **Feature Transformation Selection**: `log1p` is applied only to **non-binary, non-negative, right-skewed** features (`skewness > 1.0`). Binary flag features (≤ 2 unique values, e.g. 0/1) are never log-transformed. Eligibility is evaluated **strictly on `X_train`** for classification and regression, and on the full feature matrix for clustering. Executed result: 53 features transformed for classification, 52 for regression, 53 for clustering.
    - **Scaling**: `StandardScaler` parameters ($\mu, \sigma$) are fitted on `X_train` only and applied to `X_test`.
    - **Unsupervised Clustering**: Evaluated on the full clean feature matrix $X_{clu}$ without train/test splitting, retaining continuous feature `col_67` while dropping the ground truth label `targets`.
 
